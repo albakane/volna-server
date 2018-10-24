@@ -39,4 +39,9 @@ router.get('/connection', function(req, res, next) {
   res.redirect('/');
 });
 
+router.get('/disconnect', function(req, res, next) {
+  req.session.login = undefined;
+  res.redirect('/');
+});
+
 module.exports = router;
