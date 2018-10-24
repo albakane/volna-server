@@ -1,0 +1,15 @@
+.button_connection {
+    font-family: "TwCenMT";
+    color: var(--greydark);
+    margin-top: 30px;
+    font-size: 20px;
+    padding: 8px 37px 8px 37px;
+    background-color: var(--greylight);
+    border: 1px solid var(--greydark);
+    transition: all .3s;
+}
+
+.button_connection:hover {
+    background-color: var(--greydark);
+    color: var(--greylight);
+}

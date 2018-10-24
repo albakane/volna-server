@@ -1,8 +1,26 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+@import "components/input.css";
+@import "components/buttons.css";
+@font-face {
+    src : url("../fonts/TwCenMT.ttf");
+    font-family: "TwCenMT";
 }
 
-a {
-  color: #00B7FF;
+
+body, html{
+    --greylight: #E4E4E4;
+    --greydark: #434343;
+    background-color: var(--greylight);
+}
+
+.container {
+    margin-left: 300px;
+    margin-right: 300px;
+    text-align: center;
+}
+.container img {
+    margin-top: 80px;
+    margin-bottom: 30px;
+}
+.container form {
+
 }

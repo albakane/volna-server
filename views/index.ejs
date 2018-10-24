@@ -5,12 +5,13 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <h1><%= project %></h1>
-    <p>Welcome to <%= project %></p>
-  <form method="post" action="/connection">
-    <input type="text" name="login">
-    <input type="password" name="password">
-    <button type="submit">Se connecter</button>
-  </form>
+    <div class="container">
+      <img src="/images/logo-1-dark.svg" alt="photo logo" width="170" height="170" />
+      <form method="post" action="/connection">
+        <input class="input-bottom" type="text" name="login" placeholder="Identifiant"><br>
+        <input class="input-bottom" type="password" name="password" placeholder="Mot de passe"><br>
+        <button class="button_connection" type="submit">Se connecter</button>
+      </form>
+    </div>
   </body>
 </html>

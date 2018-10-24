@@ -1,0 +1,10 @@
+.input-bottom {
+    width: 50%;
+    margin : 10px;
+    background-color: var(--greylight);
+    font-family: "TwCenMT";
+    font-size: 18px;
+    border : 1px solid var(--greylight);
+    border-bottom: 1px solid var(--greydark);
+    padding: 10px;
+}
