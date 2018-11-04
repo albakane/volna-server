@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= project %> - <%= title %></title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+<body>
+<form method="post" action="/tracker/new-rally/control">
+  <select name="rally_type">
+    <option value="PP">PP</option>
+    <option value="ANR">ANR</option>
+    <option value="RA">RA</option>
+  </select>
+  <input name="rally_name" placeholder="Nom du rallye">
+  <div id="pilots">
+    <input name="reg_number_1" placeholder="Matricule">
+    <input name="reg_number_2" placeholder="Matricule">
+    <input name="reg_number_3" placeholder="Matricule">
+    <input name="reg_number_4" placeholder="Matricule">
+    <input name="reg_number_5" placeholder="Matricule">
+  </div>
+  <a id="morePilots" href="#" class="button_connection" style="text-decoration: none">Ajouter pilotes</a>
+  <input type="file" name="kml_file">
+  <button class="button_connection">Nouvelle course</button>
+</form>
+</body>
+<script src="/javascripts/style.js"></script>
+</html>

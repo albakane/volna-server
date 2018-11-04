@@ -40,8 +40,10 @@ router.get('/connection', function(req, res, next) {
 });
 
 router.get('/disconnect', function(req, res, next) {
-  req.session.login = undefined;
-  res.redirect('/');
+  if (req.session.login !== undefined || '') {
+    req.session.login = undefined;
+    res.redirect('/');
+  }
 });
 
 module.exports = router;

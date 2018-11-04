@@ -1,10 +1,14 @@
 .input-bottom {
     width: 50%;
+    outline: none;
     margin : 10px;
     background-color: var(--greylight);
-    font-family: "TwCenMT";
+    font-family: "TwCenMT", sans-serif;
     font-size: 18px;
+    transition: all .3s;
     border : 1px solid var(--greylight);
     border-bottom: 1px solid var(--greydark);
-    padding: 10px;
-}
+    padding: 10px; }
+.input-bottom:focus {
+    font-size: 20px;
+    width: 53%; }

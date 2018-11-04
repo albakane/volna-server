@@ -5,176 +5,190 @@
   <link rel='stylesheet' href='/stylesheets/style.css' />
 
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYC9Vc1IshWi1gUgNG0n75x7DEQ5XfkKU&callback=initMap" charset="utf-8"></script>
+  <script src="/socket.io/socket.io.js"></script>
   <script type="text/javascript">
     function initMap() {
 
-      let leClosAudy = {
-        lat : 47.591641,
-        lng : 1.453239
+      class TextMarker extends google.maps.OverlayView {
+
+        constructor (pos, map, text) {
+          super()
+          this.div = null
+          this.pos = pos
+          this.text = text
+          this.setMap(map)
+        }
+
+        onAdd () {
+          this.div = document.createElement('div')
+          this.div.classList.add('text-marker')
+          this.div.style.position = 'absolute'
+          this.div.innerHTML = this.text
+          switch (this.text.trim()) {
+            case 'SP':
+              this.div.classList.add('text-marker-sp')
+              break
+            case 'FP':
+              this.div.classList.add('text-marker-fp')
+              break
+            default:
+              break
+          }
+          this.getPanes().overlayImage.appendChild(this.div)
+        }
+
+        draw () {
+          let position = this.getProjection().fromLatLngToDivPixel(this.pos)
+          this.div.style.left = position.x + "px"
+          this.div.style.top = position.y + "px"
+        }
+
+        onRemove () {
+          this.div.parentNode.removeChild(this.div)
+        }
+
       }
 
-      let map = new google.maps.Map(document.querySelector('#map'), {
+      let map
+      let poly
+      let socket = io()
+
+      let positionCompetition = {
+        lat : 47.28,
+        lng : 1
+      }
+
+      socket.emit('page', 'TRACKING_PAGE');
+
+      socket.on('send_coordonates', function(message) {
+        let path = poly.getPath()
+        let latLng = new google.maps.LatLng(message)
+        if (path.length >= 100) path.removeAt(0)
+        path.push(latLng)
+      })
+
+      socket.on('send_way', function(geoJSON) {
+        for (let i = 0; i < geoJSON.features.length; i++) {
+          switch (geoJSON.features[i].geometry.type) {
+            case 'Point':
+              createMarker(geoJSON.features[i].geometry.coordinates, geoJSON.features[i].properties.name)
+              break
+            case 'LineString':
+              createPolyline(geoJSON.features[i].geometry.coordinates)
+              break
+            case 'Polygon':
+              createPolygon(geoJSON.features[i].geometry.coordinates[0])
+              break
+            default:
+              break
+          }
+        }
+      })
+
+      function createMarker(latLngArray, content) {
+        let coordinates = new google.maps.LatLng(latLngArray[1], latLngArray[0])
+        new TextMarker(coordinates, map, content)
+      }
+
+      function createPolyline(latLngArray) {
+        let coordinates = []
+        for (let i = 0; i < latLngArray.length; i++) {
+          let coor = {
+            lat : latLngArray[i][1],
+            lng : latLngArray[i][0]
+          }
+          coordinates[i] = coor
+        }
+        let polyline = new google.maps.Polyline({
+          path : coordinates,
+          geodesic : true,
+          strokeColor : '#434343',
+          strokeOpacity : 1.0,
+          strokeWeight : 2
+        });
+        polyline.setMap(map)
+      }
+
+      function createPolygon(latLngArray) {
+        let coordinates = []
+        for (let i = 0; i < latLngArray.length; i++) {
+          let coor = {
+            lat : latLngArray[i][1],
+            lng : latLngArray[i][0]
+          }
+          coordinates[i] = coor
+        }
+        let polygon = new google.maps.Polygon({
+          paths : coordinates,
+          strokeColor : '#f00',
+          strokeOpacity : 0.8,
+          strokeWeight : 1,
+          fillColor : '#f00',
+          fillOpacity : 0.35
+        })
+        polygon.setMap(map)
+      }
+
+      map = new google.maps.Map(document.querySelector('#map'), {
         controls : true,
         draggable : true,
         zoom   : 12,
-        center : leClosAudy,
+        center : positionCompetition,
         styles : [
           {
-            "elementType": "geometry",
+            "featureType": "administrative.land_parcel",
             "stylers": [
               {
-                "color": "#242f3e"
+                "visibility": "off"
               }
             ]
           },
           {
-            "elementType": "labels.text.fill",
+            "featureType": "administrative.neighborhood",
             "stylers": [
               {
-                "color": "#746855"
-              }
-            ]
-          },
-          {
-            "elementType": "labels.text.stroke",
-            "stylers": [
-              {
-                "color": "#242f3e"
-              }
-            ]
-          },
-          {
-            "featureType": "administrative.locality",
-            "elementType": "labels.text.fill",
-            "stylers": [
-              {
-                "color": "#d59563"
+                "visibility": "off"
               }
             ]
           },
           {
             "featureType": "poi",
-            "elementType": "labels.text.fill",
             "stylers": [
               {
-                "color": "#d59563"
+                "visibility": "off"
               }
             ]
           },
           {
             "featureType": "poi.park",
-            "elementType": "geometry",
             "stylers": [
               {
-                "color": "#263c3f"
-              }
-            ]
-          },
-          {
-            "featureType": "poi.park",
-            "elementType": "labels.text.fill",
-            "stylers": [
-              {
-                "color": "#6b9a76"
+                "visibility": "simplified"
               }
             ]
           },
           {
             "featureType": "road",
-            "elementType": "geometry",
             "stylers": [
               {
-                "color": "#38414e"
+                "visibility": "simplified"
               }
             ]
           },
           {
             "featureType": "road",
-            "elementType": "geometry.stroke",
+            "elementType": "labels",
             "stylers": [
               {
-                "color": "#212a37"
-              }
-            ]
-          },
-          {
-            "featureType": "road",
-            "elementType": "labels.text.fill",
-            "stylers": [
-              {
-                "color": "#9ca5b3"
-              }
-            ]
-          },
-          {
-            "featureType": "road.highway",
-            "elementType": "geometry",
-            "stylers": [
-              {
-                "color": "#746855"
-              }
-            ]
-          },
-          {
-            "featureType": "road.highway",
-            "elementType": "geometry.stroke",
-            "stylers": [
-              {
-                "color": "#1f2835"
-              }
-            ]
-          },
-          {
-            "featureType": "road.highway",
-            "elementType": "labels.text.fill",
-            "stylers": [
-              {
-                "color": "#f3d19c"
+                "visibility": "off"
               }
             ]
           },
           {
             "featureType": "transit",
-            "elementType": "geometry",
             "stylers": [
               {
-                "color": "#2f3948"
-              }
-            ]
-          },
-          {
-            "featureType": "transit.station",
-            "elementType": "labels.text.fill",
-            "stylers": [
-              {
-                "color": "#d59563"
-              }
-            ]
-          },
-          {
-            "featureType": "water",
-            "elementType": "geometry",
-            "stylers": [
-              {
-                "color": "#17263c"
-              }
-            ]
-          },
-          {
-            "featureType": "water",
-            "elementType": "labels.text.fill",
-            "stylers": [
-              {
-                "color": "#515c6d"
-              }
-            ]
-          },
-          {
-            "featureType": "water",
-            "elementType": "labels.text.stroke",
-            "stylers": [
-              {
-                "color": "#17263c"
+                "visibility": "off"
               }
             ]
           }

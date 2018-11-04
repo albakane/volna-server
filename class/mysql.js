@@ -21,6 +21,15 @@ class Mysql {
     }
   }
 
+  static createCompetition (formular, callback) {
+    if (formular.pilots.length <= 0) {
+      callback({error : true, content : 'Veuillez renseigner au moins un matricule'});
+    } else {
+
+    }
+
+  }
+
 }
 
 module.exports = Mysql;

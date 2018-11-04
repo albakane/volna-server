@@ -1,7 +1,8 @@
 .button_connection {
-    font-family: "TwCenMT";
+    font-family: "TwCenMT", sans-serif;
     color: var(--greydark);
     margin-top: 30px;
+    cursor: pointer;
     font-size: 20px;
     padding: 8px 37px 8px 37px;
     background-color: var(--greylight);
