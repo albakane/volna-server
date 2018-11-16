@@ -7,7 +7,6 @@ let session = require('express-session');
 let Influx = require('influx');
 let tj = require('@mapbox/togeojson');
 let fs = require('fs');
-let DOMParser = require('xmldom').DOMParser;
 
 let connectionRouter = require('./routes/connection');
 let dashboardRouter = require('./routes/dashboard');
@@ -52,13 +51,6 @@ function getLocation () {
 
 //setInterval(getLocation, 100);
 
-// TEST KML FILES
-/*let kml = new DOMParser().parseFromString(fs.readFileSync('public/kml/B.kml', 'utf8'));
-let converted = tj.kml(kml, { styles : true } );
-fs.writeFileSync('public/kml/B.json', JSON.stringify(converted), 'utf8');
-console.log(converted);
-*/
-
 app.get('/test_map', function (req, res) {
   res.render('tracking', { title : 'Tracking', project : 'Volna' });
 });
@@ -82,6 +74,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/upload', express.static(path.join(__dirname, 'test_upload')));
 
 app.use('/', connectionRouter);
 app.use('/dashboard', dashboardRouter);

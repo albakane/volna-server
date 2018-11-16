@@ -5,7 +5,7 @@
   <link rel='stylesheet' href='/stylesheets/style.css' />
 </head>
 <body>
-<form method="post" action="/tracker/new-rally/control">
+<form method="post"  enctype="multipart/form-data" action="/tracker/new-rally/control">
   <select name="rally_type">
     <option value="PP">PP</option>
     <option value="ANR">ANR</option>
@@ -20,7 +20,7 @@
     <input name="reg_number_5" placeholder="Matricule">
   </div>
   <a id="morePilots" href="#" class="button_connection" style="text-decoration: none">Ajouter pilotes</a>
-  <input type="file" name="kml_file">
+  <input type="file" name="kml_file" accept="*/*">
   <button class="button_connection">Nouvelle course</button>
 </form>
 </body>
