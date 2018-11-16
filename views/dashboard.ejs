@@ -5,13 +5,29 @@
   <link rel='stylesheet' href='/stylesheets/style.css' />
 </head>
 <body>
-<h1><%= title %></h1>
-<ul>
-  <li><strong>Championat départemental</strong><br>Huisseau-sur-Cosson, Centre</li>
-  <li><strong>Championat régional</strong><br></li>
-  <li><strong>Championat senior</strong><br></li>
-  <li><strong>Rallye ENSAM/ESEO</strong><br></li>
-  <li><strong>Course finale junior</strong><br></li>
-</ul>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="/disconnect">Se déconnecter</a></li>
+        <li><a href="tracking.ejs">Nouveau rallye</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="container-dashboard">
+    <div class="left">
+      <ul class="liste">
+        <li><p class="uppercase">Championnat départemental</p><p>Huisseau-sur-Cosson, Centre<p></li>
+        <li><p class="uppercase">Championnat régional</p><p>Saint-Paumé-sur-Mer, La Creuse</p></li>
+        <li><p class="uppercase">Championnat senior</p><p>Angers, Maine-et-Loire</p></li>
+        <li><p class="uppercase">Rallye ENSAM/ESEO</p><p>Toulouse, France</p></li>
+        <li><p class="uppercase">Course finale junior</p><p>Angers, Maine-et-Loire</p></li>
+      </ul>
+    </div>
+    <div class="right">
+      <a href="index.ejs">+</a>
+    </div>
+  </div>
+
 </body>
 </html>
