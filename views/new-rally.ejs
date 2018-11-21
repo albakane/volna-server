@@ -5,24 +5,34 @@
   <link rel='stylesheet' href='/stylesheets/style.css' />
 </head>
 <body>
-<form method="post"  enctype="multipart/form-data" action="/tracker/new-rally/control">
-  <select name="rally_type">
-    <option value="PP">PP</option>
-    <option value="ANR">ANR</option>
-    <option value="RA">RA</option>
-  </select>
-  <input name="rally_name" placeholder="Nom du rallye">
-  <div id="pilots">
-    <input name="reg_number_1" placeholder="Matricule">
-    <input name="reg_number_2" placeholder="Matricule">
-    <input name="reg_number_3" placeholder="Matricule">
-    <input name="reg_number_4" placeholder="Matricule">
-    <input name="reg_number_5" placeholder="Matricule">
+<%- include('navbar'); %>
+  <div class="container container-rally">
+    <h1 class="form-title">Nouvelle compétition</h1>
+    <form class="form-rally" method="post"  enctype="multipart/form-data" action="/tracker/new-rally/control">
+      <select class="form-select" name="rally_type">
+        <option value="PP">PP</option>
+        <option value="ANR">ANR</option>
+        <option value="RA">RA</option>
+      </select>
+      <br>
+      <input class="input-bottom" name="rally_name" placeholder="Nom du rallye">
+      <h2 class="form-title-2">Liste des candidats</h2>
+      <div id="pilots">
+        <input class="input-bottom" name="reg_number_1" placeholder="Matricule">
+        <input class="input-bottom" name="reg_number_2" placeholder="Matricule">
+        <input class="input-bottom" name="reg_number_3" placeholder="Matricule">
+        <input class="input-bottom" name="reg_number_4" placeholder="Matricule">
+        <input class="input-bottom" name="reg_number_5" placeholder="Matricule">
+      </div>
+      <div class="" style="margin-top: 30px;">
+        <a id="morePilots" href="#" class="button-connection-sm" style="text-decoration: none;">Ajouter pilotes</a>
+      </div>
+      <div style="margin-top: 30px;">
+        <input type="file" name="kml_file" accept="*/*">
+      </div>
+      <button class="button-connection">Nouvelle course</button>
+    </form>
   </div>
-  <a id="morePilots" href="#" class="button_connection" style="text-decoration: none">Ajouter pilotes</a>
-  <input type="file" name="kml_file" accept="*/*">
-  <button class="button_connection">Nouvelle course</button>
-</form>
 </body>
 <script src="/javascripts/style.js"></script>
 </html>

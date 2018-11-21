@@ -1,5 +1,10 @@
 @import "components/input.css";
 @import "components/buttons.css";
+@import "components/maps.css";
+@import "components/navbar.css";
+@import "components/list.css";
+@import "components/form.css";
+
 @font-face {
     src : url("../fonts/TwCenMT.ttf");
     font-family: "TwCenMT";
@@ -7,20 +12,30 @@
 
 
 body, html{
+    margin: 0;
     --greylight: #E4E4E4;
     --greydark: #434343;
-    background-color: var(--greylight);
-}
+    background-color: var(--greylight); }
 
 .container {
     margin-left: 300px;
     margin-right: 300px;
-    text-align: center;
-}
-.container img {
-    margin-top: 80px;
-    margin-bottom: 30px;
-}
+    text-align: center; }
+.container.container-rally {
+    margin-top: 60px; }
+    .container img {
+        margin-top: 80px;
+        margin-bottom: 30px; }
+
+.container-dashboard {
+    margin-top: 60px; }
+    .container-dashboard .left {
+        width: 50%;
+        float: left; }
+    .container-dashboard .right {
+        width: 50%;
+        float: right; }
+
 .container form {
 
 }

@@ -13,7 +13,9 @@ router.get('/rally/:rally_id', function (req, res) {
     res.redirect('/');
   } else {
     let mysql = require('../class/mysql');
-    console.log(mysql.getRallyInformation(req.params.rally_id));
+    mysql.getRallyInformation(req.params.rally_id, function(rallyID) {
+      res.send(rallyID);
+    });
   }
 });
 

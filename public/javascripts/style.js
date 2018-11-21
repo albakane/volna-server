@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let input = document.createElement('input')
     input.setAttribute('name', 'reg_number_' + index)
     input.setAttribute('placeholder', 'Matricule')
+    input.classList.add('input-bottom');
     return input
   }
 

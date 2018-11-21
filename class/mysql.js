@@ -22,6 +22,8 @@ class Mysql {
   }
 
   static createCompetition (formular, callback) {
+    let COMPETITION_ID = 0;
+    let PILOT_IDS = [];
     if (formular.pilots.length <= 0) {
       callback({error : true, content : 'Veuillez renseigner au moins un matricule'});
     } else {
@@ -32,6 +34,7 @@ class Mysql {
         DATE : new Date(),
         TYPE : formular.rally_type
       }, function (error, results, fields) {
+        COMPETITION_ID = results.insertId;
         if (error) {
           callback({error : true, content : 'Une erreur s\'est produite pendant la création'});
         } else {
@@ -42,9 +45,14 @@ class Mysql {
             pilots[i] = pilot;
           }
           connection.query('INSERT INTO PILOT (REG_NUMBER) VALUES ?', [pilots], function (error, results, fields) {
+            console.log(results);
+            for (let i = 0; i < results.affectedRows; i++) {
+              PILOT_IDS[i] = results
+            }
             if (error) {
               callback({error : true, content : 'Une erreur s\'est produite pendant la création'});
             } else {
+//              connection.query('INSERT INTO COMPETITION_PILOT (ID_PILOT, ID_COMPETITION) VALUES ?' )
               callback({error : false, content : 'RAS'});
             }
           });
@@ -53,7 +61,7 @@ class Mysql {
     }
   }
 
-  static getRallyInformation(rallyID) {
+  static getRallyInformation(rallyID, callback) {
     connection.query('SELECT * FROM COMPETITION WHERE ID = ?', [rallyID], function (error, results, fields) {
       error ?
         callback({error : true, content : 'Une erreur s\'est produite durant le chargement de la page'}) :

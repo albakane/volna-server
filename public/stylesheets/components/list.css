@@ -1,0 +1,34 @@
+ul.list {
+  list-style: none; }
+  ul.list li {
+    position: relative;
+    width: 100%;
+    border-bottom: 2px solid var(--greydark);
+    margin: 0 0 20px 0;
+    height: 100px; }
+    ul.list li .date {
+      position: relative;
+      float: left;
+      width: 30%; }
+      ul.list li .date p {
+        font-family: "TwCenMT", sans-serif;
+        color: var(--greydark);
+        font-size: 20px;
+        margin: 0;
+        line-height: 33px; }
+    ul.list li .competition {
+      position: relative;
+      text-decoration: none;
+      float: right;
+      width: 70%; }
+      ul.list li .competition h2.title-competition {
+        font-family: "TwCenMT", sans-serif;
+        font-size: 24px;
+        margin: 10px 0 0 0;
+        line-height: 40px;
+        color: var(--greydark); }
+      ul.list li .competition h3.location-competition {
+        font-family: "TwCenMT", sans-serif;
+        font-size: 24px;
+        margin: 0;
+        color: var(--greydark); }

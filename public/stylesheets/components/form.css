@@ -1,0 +1,11 @@
+h1.form-title {
+  line-height: 100px;
+  font-family: "TwCenMT", sans-serif;
+  font-size: 48px;
+  color: var(--greydark); }
+
+.form-rally h2.form-title-2 {
+  font-family: "TwCenMT", sans-serif;
+  font-size: 24px;
+  color: var(--greydark);
+}
