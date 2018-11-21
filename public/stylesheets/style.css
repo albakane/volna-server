@@ -1,14 +1,12 @@
 @import "components/input.css";
 @import "components/buttons.css";
-@import "components/maps.css";
-
 @font-face {
     src : url("../fonts/TwCenMT.ttf");
     font-family: "TwCenMT";
 }
 
+
 body, html{
-    margin: 0px;
     --greylight: #E4E4E4;
     --greydark: #434343;
     background-color: var(--greylight);
