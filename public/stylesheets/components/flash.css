@@ -1,0 +1,16 @@
+.flash {
+    position : fixed;
+    top : 70px;
+    right: -100%;
+    background-color: #AA0509;
+    color: var(--greylight);
+    font-family: "TwCenMT", sans-serif;
+    font-size: 18px;
+    padding: 20px;
+    animation : move 5s 1;
+}
+
+@keyframes move {
+    0%, 90% {right:20px;}
+    100% {right:-100%;}
+}

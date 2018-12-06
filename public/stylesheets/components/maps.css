@@ -36,6 +36,61 @@
       border-left: 6px solid transparent;
       border-right: 6px solid transparent;
       border-top: 6px solid #fff; }
+  #map .text-marker.text-marker-sp {
+    background-color: yellow; }
+    #map .text-marker.text-marker-sp::after {
+      border-top: 6px solid yellow; }
+  #map .text-marker.text-marker-fp {
+    background-color: red; }
+    #map .text-marker.text-marker-fp::after {
+      border-top: 6px solid red; }
+
+.afficherHeure {
+  position: fixed;
+  z-index: 1000;
+  background-color: var(--greydark);
+  color: var(--greylight);
+  font-family: TwCenMT;
+  font-size: 40px;
+  padding: 5px 20px 5px 20px;}
+  .afficherHeure p {
+    margin : 0;
+  }
+
+.icon-top {
+  text-align: center;
+  margin-top: -8px;
+  margin-bottom: 0;
+}
+
+.icon-top:hover {
+  -moz-transform:rotate(180deg);
+  -webkit-transform:rotate(180deg);
+  -o-transform:rotate(180deg);
+  -ms-transform:rotate(180deg);
+}
+
+.icon-bottom {
+  text-align: center;
+  margin-top: 5px;
+  margin-bottom: 0;
+}
+
+
+.icon-top:hover + .icon-hidden{
+  text-align: center;
+  margin-top: 5px;
+  margin-bottom: 0;
+  display:block;
+
+}
+.icon-hidden {
+  text-align: center;
+  margin-top: 5px;
+  margin-bottom-bottom: 0;
+  display:none;
+}
+
   #map .text-marker.text-marker-sp, #map .text-marker.text-marker-fp {
     color: var(--greylight);
     background-color: var(--greydark); }
