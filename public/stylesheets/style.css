@@ -4,6 +4,7 @@
 @import "components/navbar.css";
 @import "components/list.css";
 @import "components/form.css";
+@import "components/flash.css";
 
 @font-face {
     src : url("../fonts/TwCenMT.ttf");

@@ -6,14 +6,17 @@
 </head>
 <body>
 <%- include('navbar'); %>
+<%- include('flash'); %>
   <div class="container container-rally">
     <h1 class="form-title">Nouvelle compétition</h1>
     <form class="form-rally" method="post"  enctype="multipart/form-data" action="/tracker/new-rally/control">
-      <select class="form-select" name="rally_type">
-        <option value="PP">PP</option>
-        <option value="ANR">ANR</option>
-        <option value="RA">RA</option>
-      </select>
+      <div class="formfield-select">
+        <select id="my_select" class="form-select" name="rally_type">
+          <option value="PP">PP</option>
+          <option value="ANR">ANR</option>
+          <option value="RA">RA</option>
+        </select>
+      </div>
       <br>
       <input class="input-bottom" name="rally_name" placeholder="Nom du rallye">
       <h2 class="form-title-2">Liste des candidats</h2>

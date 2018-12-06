@@ -6,6 +6,7 @@
 
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYC9Vc1IshWi1gUgNG0n75x7DEQ5XfkKU&callback=initMap" charset="utf-8"></script>
   <script src="/socket.io/socket.io.js"></script>
+  <script src="/javascripts/style.js"></script>
   <script type="text/javascript">
     function initMap() {
 
@@ -198,6 +199,17 @@
   </script>
 </head>
 <body>
+  <div class="afficherHeure">
+    <p>Afficher l'heure</p>
+    <div class="icon-top">
+      <img id="icon-top" src="/images/arrow-down.svg" alt="arrow down" width="20" height="20"/>
+    </div>
+    <div class="icon-hidden">
+      <img src="/images/logo-1-dark.svg" alt="logo" width="50" height="50"/>
+    </div>
+    <a>
+    </a>
+  </div>
   <div id="map"></div>
 </body>
 </html>
