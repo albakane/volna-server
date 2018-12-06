@@ -4,7 +4,6 @@ let path = require('path');
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
 let session = require('express-session');
-let Influx = require('influx');
 let tj = require('@mapbox/togeojson');
 let fs = require('fs');
 
@@ -16,22 +15,8 @@ let app = express();
 let http = require('http').Server(app);
 let io = require('socket.io')(http);
 
-let influx = new Influx.InfluxDB({
-  host : '192.168.1.26',
-  database : 'volnadb_test',
-  schema : [
-    {
-      measurement : 'location',
-      fields : {
-        lat : Influx.FieldType.FLOAT,
-        lng : Influx.FieldType.FLOAT
-      },
-      tags : [
-        'registration_number'
-      ]
-    }
-  ]
-});
+let influx = require(path.join(__dirname, "config/influx-connection"));
+let mysql = require(path.join(__dirname, "class/mysql"));
 
 io.on('connection', function(socket) {
   console.log('A user is connected');
@@ -44,15 +29,34 @@ io.on('connection', function(socket) {
 });
 
 function getLocation () {
-  influx.query('SELECT mean("lat"), mean("lng") FROM "volnadb_test"."autogen"."location" WHERE "registration_number"=\'F-FDHN\'').then(results => {
-    io.emit('send_coordonates', {lat : results[0].mean, lng : results[0].mean_1});
+  influx.query('SELECT * FROM "volnadb_test"."autogen"."location" where time > now() - 1s').then(results => {
+    let pilots = [];
+    for (let i = 0; i < results.length; i++) {
+      if (results[i].time !== undefined) {
+        pilots[i] = {
+          reg_number : results[i].registration_number,
+          lat : results[i].lat,
+          lng : results[i].lng
+        }
+      }
+    }
+    io.emit('send_coordonates', pilots);
   });
 }
 
-//setInterval(getLocation, 100);
-
 app.get('/test_map', function (req, res) {
-  res.render('tracking', { title : 'Tracking', project : 'Volna' });
+  setInterval(getLocation, 1000);
+  //getLocation();
+  res.render('tracking', {
+    title : 'Tracking',
+    project : 'Volna',
+    pilots : [
+      'F-GNDH',
+      'F-LJRD',
+      'F-AFSV',
+      'F-PLEF'
+    ]
+  });
 });
 
 // Session configuration

@@ -22,6 +22,7 @@ body, html{
     margin-right: 300px;
     text-align: center; }
 .container.container-rally {
+    margin-bottom: 50px;
     margin-top: 60px; }
     .container img {
         margin-top: 80px;
@@ -35,7 +36,3 @@ body, html{
     .container-dashboard .right {
         width: 50%;
         float: right; }
-
-.container form {
-
-}

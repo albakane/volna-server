@@ -3,7 +3,8 @@ let connection = mysql.createConnection({
   host : 'localhost',
   user : 'root',
   password : 'root',
-  database : 'volna'
+  database : 'volna',
+  multipleStatements : true
 });
 connection.connect();
 
