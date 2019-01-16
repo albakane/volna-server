@@ -14,7 +14,15 @@ router.get('/rally/:rally_id', function (req, res) {
   } else {
     let mysql = require('../class/mysql');
     mysql.getRallyInformation(req.params.rally_id, function(rallyID) {
-      res.send(rallyID);
+      //setInterval(getLocation, 1000);
+      //getLocation();
+      mysql.getPilotsFromCompetitionID(rallyID.content.ID_COMPETITION, function(pilotIDs) {
+        res.render('tracking', {
+          title : rallyID.content.NAME,
+          project : 'Volna',
+          pilots : pilotIDs.content
+        });
+      });
     });
   }
 });
@@ -29,51 +37,50 @@ router.get('/new-rally', function (req, res) {
 });
 
 router.post('/new-rally/control', function (req, res) {
+  let hasher = require('../class/hasher');
+  let fileName = hasher.createKMLId();
+  let formular = {
+    pilots : [],
+    rally_type : req.body.rally_type,
+    rally_name : req.body.rally_name,
+    rally_id : hasher.createRallyID(),
+    kml_file_name : fileName
+  };
   if (req.session.login === undefined || '') {
     req.flash('error', 'Veuillez vous connecter d\'abord');
+    res.redirect('/');
   } else {
-    let hasher = require('../class/hasher');
-    let fileName = hasher.createKMLId();
-    let formular = {
-      pilots : [],
-      rally_type : req.body.rally_type,
-      rally_name : req.body.rally_name,
-      rally_id : hasher.createRallyID(),
-      kml_file_name : fileName
-    };
-    if (req.session.login === undefined || '') {
-      req.flash('error', 'Veuillez vous connecter d\'abord');
-      res.redirect('/');
+    let pilots = [];
+    let stringChecker = require('../class/stringCheck');
+    if (stringChecker.isEmpty(req.body.rally_name) === true) {
+      req.flash('error', 'Veuillez donner un nom à la compétition');
+      res.redirect('/tracker/new-rally');
     } else {
-      let pilots = [];
-      let stringChecker = require('../class/stringCheck');
-      if (stringChecker.isEmpty(req.body.rally_name) === true) {
-        req.flash('error', 'Veuillez donner un nom à la compétition');
-        res.redirect('/tracker/new-rally');
-      } else {
-        let error = false;
-        let i = 0;
-        for (let element in req.body) {
-          if (element.substr(0, 10) === 'reg_number') {
-            let registration = req.body[element].trim().toUpperCase();
-            if (registration.length !== 0) {
-              if (registration.length === 6) {
-                pilots[i] = registration;
-                i++;
-              } else {
-                error = true;
-              }
-              registration.substr(0, 2) === 'F-' ? error = error : error = true;
+      let error = false;
+      let i = 0;
+      for (let element in req.body) {
+        if (element.substr(0, 10) === 'reg_number') {
+          let registration = req.body[element].trim().toUpperCase();
+          if (registration.length !== 0) {
+            if (registration.length === 6) {
+              pilots[i] = registration;
+              i++;
+            } else {
+              error = true;
             }
+            registration.substr(0, 2) === 'F-' ? error = error : error = true;
           }
         }
-        formular.pilots = pilots;
-        if (error === true) {
+      }
+      formular.pilots = pilots;
+      if (error === true) {
+        req.flash('error', 'Une erreur s\'est produite durant l\'insertion des pilotes');
+        res.redirect('/tracker/new-rally');
+      } else {
+        if (Object.keys(req.files).length === 0) {
+          req.flash('error', 'Pas de KML importé');
           res.redirect('/tracker/new-rally');
         } else {
-          if (Object.keys(req.files).length === 0) {
-            return res.status(400).send('No files uploaded');
-          }
           let KMLFile = req.files.kml_file;
           KMLFile.mv(path.join(__dirname, '../test_upload/') + fileName + '.kml', function (error) {
             if (error) return res.status(500).send(error);

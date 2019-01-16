@@ -5,11 +5,7 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-  <% if (locals.flash && locals.flash.error) { %>
-    <div class="flash">
-      <h>flash.error</h>
-    </div>
-  <% } %>
+    <%- include('flash'); %>
     <div class="container">
       <img src="/images/logo-1-dark.svg" alt="photo logo" width="170" height="170" />
       <form method="post" action="/connection">

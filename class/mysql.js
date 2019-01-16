@@ -93,12 +93,16 @@ class Mysql {
         pilotsID[i] = results[i].ID_PILOT;
       }
       connection.query(query, pilotsID, function (error, results, fields) {
-        if (error) throw error;
-        let regNumbers = [];
-        for (let i = 0; i < results.length; i++) {
-          regNumbers[i] = results[i][0].REG_NUMBER;
+        if (error) {
+          throw error;
+//          callback({error : true, content : 'Erreur dans la base de données'});
+        } else {
+          let regNumbers = [];
+          for (let i = 0; i < results.length; i++) {
+            regNumbers[i] = results[i][0].REG_NUMBER;
+          }
+          callback({error : false, content : regNumbers});
         }
-        callback({error : false, content : regNumbers});
       })
     })
   }

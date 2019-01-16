@@ -39,7 +39,6 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function printDate() {
-    console.log(heureFrance())
     document.querySelector('.afficherHeure p').innerHTML = heureFrance();
   }
 

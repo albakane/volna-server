@@ -8,253 +8,266 @@
   <script src="/socket.io/socket.io.js"></script>
   <script src="/javascripts/style.js"></script>
   <script type="text/javascript">
-    function initMap() {
+    document.addEventListener('DOMContentLoaded', function () {
 
-      class TextMarker extends google.maps.OverlayView {
+      console.log(new Date(1422568543702))
 
-        constructor (pos, map, text) {
-          super()
-          this.div = null
-          this.pos = pos
-          this.text = text
-          this.setMap(map)
-        }
+      function initMap() {
 
-        onAdd () {
-          this.div = document.createElement('div')
-          this.div.classList.add('text-marker')
-          this.div.style.position = 'absolute'
-          this.div.innerHTML = this.text
-          switch (this.text.trim()) {
-            case 'SP':
-              this.div.classList.add('text-marker-sp')
-              break
-            case 'FP':
-              this.div.classList.add('text-marker-fp')
-              break
-            default:
-              break
+        class TextMarker extends google.maps.OverlayView {
+
+          constructor (pos, map, text) {
+            super()
+            this.div = null
+            this.pos = pos
+            this.text = text
+            this.setMap(map)
           }
-          this.getPanes().overlayImage.appendChild(this.div)
-        }
 
-        draw () {
-          let position = this.getProjection().fromLatLngToDivPixel(this.pos)
-          this.div.style.left = position.x + "px"
-          this.div.style.top = position.y + "px"
-        }
-
-        onRemove () {
-          this.div.parentNode.removeChild(this.div)
-        }
-
-      }
-
-      let positionCompetition = {
-        lat : 47.28,
-        lng : 1
-      }
-
-      let map = new google.maps.Map(document.querySelector('#map'), {
-        controls : true,
-        draggable : true,
-        zoom   : 12,
-        center : positionCompetition,
-        styles : [
-          {
-            "featureType": "administrative.land_parcel",
-            "stylers": [
-              {
-                "visibility": "off"
-              }
-            ]
-          },
-          {
-            "featureType": "administrative.neighborhood",
-            "stylers": [
-              {
-                "visibility": "off"
-              }
-            ]
-          },
-          {
-            "featureType": "poi",
-            "stylers": [
-              {
-                "visibility": "off"
-              }
-            ]
-          },
-          {
-            "featureType": "poi.park",
-            "stylers": [
-              {
-                "visibility": "simplified"
-              }
-            ]
-          },
-          {
-            "featureType": "road",
-            "stylers": [
-              {
-                "visibility": "simplified"
-              }
-            ]
-          },
-          {
-            "featureType": "road",
-            "elementType": "labels",
-            "stylers": [
-              {
-                "visibility": "off"
-              }
-            ]
-          },
-          {
-            "featureType": "transit",
-            "stylers": [
-              {
-                "visibility": "off"
-              }
-            ]
+          onAdd () {
+            this.div = document.createElement('div')
+            this.div.classList.add('text-marker')
+            this.div.style.position = 'absolute'
+            this.div.innerHTML = this.text
+            switch (this.text.trim()) {
+              case 'SP':
+                this.div.classList.add('text-marker-sp')
+                break
+              case 'FP':
+                this.div.classList.add('text-marker-fp')
+                break
+              default:
+                break
+            }
+            this.getPanes().overlayImage.appendChild(this.div)
           }
+
+          draw () {
+            let position = this.getProjection().fromLatLngToDivPixel(this.pos)
+            this.div.style.left = position.x + "px"
+            this.div.style.top = position.y + "px"
+          }
+
+          onRemove () {
+            this.div.parentNode.removeChild(this.div)
+          }
+
+        }
+
+        let positionCompetition = {
+          lat : 47.28,
+          lng : 1
+        }
+
+        let map = new google.maps.Map(document.querySelector('#map'), {
+          controls : true,
+          draggable : true,
+          zoom   : 12,
+          center : positionCompetition,
+          styles : [
+            {
+              "featureType": "administrative.land_parcel",
+              "stylers": [
+                {
+                  "visibility": "off"
+                }
+              ]
+            },
+            {
+              "featureType": "administrative.neighborhood",
+              "stylers": [
+                {
+                  "visibility": "off"
+                }
+              ]
+            },
+            {
+              "featureType": "poi",
+              "stylers": [
+                {
+                  "visibility": "off"
+                }
+              ]
+            },
+            {
+              "featureType": "poi.park",
+              "stylers": [
+                {
+                  "visibility": "simplified"
+                }
+              ]
+            },
+            {
+              "featureType": "road",
+              "stylers": [
+                {
+                  "visibility": "simplified"
+                }
+              ]
+            },
+            {
+              "featureType": "road",
+              "elementType": "labels",
+              "stylers": [
+                {
+                  "visibility": "off"
+                }
+              ]
+            },
+            {
+              "featureType": "transit",
+              "stylers": [
+                {
+                  "visibility": "off"
+                }
+              ]
+            }
+          ]
+        })
+
+        let socket = io()
+        let colors = [
+          '#2ca97f',
+          '#d05574',
+          '#3875ac',
+          '#f9fe10',
+          '#7abef9',
+          '#f27c92',
+          '#254724',
+          '#6f6db4',
+          '#fe1a39',
+          '#c6d619',
+          '#52aeac',
+          '#12fda6',
+          '#e670cf',
+          '#6a64b5',
+          '#b30778'
         ]
-      })
-
-      let socket = io()
-      let colors = [
-        '#2ca97f',
-        '#d05574',
-        '#3875ac',
-        '#f9fe10',
-        '#7abef9',
-        '#f27c92',
-        '#254724',
-        '#6f6db4',
-        '#fe1a39',
-        '#c6d619',
-        '#52aeac',
-        '#12fda6',
-        '#e670cf',
-        '#6a64b5',
-        '#b30778'
-      ]
-      let pilots = [
-        <% for (let i = 0; i < pilots.length; i++) { %>
+        let pilots = [
+          <% for (let i = 0; i < pilots.length; i++) { %>
           <% if (i == pilots.length - 1) { %>
-            new google.maps.Polyline({
-              geodesic : true,
-              strokeColor : colors[<%= i %>],
-              strokeOpacity : 1.0,
-              strokeWeight : 1,
-              reg_number : "<%= pilots[i] %>"
-            })
+          new google.maps.Polyline({
+            geodesic : true,
+            strokeColor : colors[<%= i %>],
+            strokeOpacity : 1.0,
+            strokeWeight : 1,
+            reg_number : "<%= pilots[i] %>"
+          })
           <% } else { %>
-            new google.maps.Polyline({
-              geodesic : true,
-              strokeColor : colors[<%= i %>],
-              strokeOpacity : 1.0,
-              strokeWeight : 1,
-              reg_number : "<%= pilots[i] %>"
-            }),
+          new google.maps.Polyline({
+            geodesic : true,
+            strokeColor : colors[<%= i %>],
+            strokeOpacity : 1.0,
+            strokeWeight : 1,
+            reg_number : "<%= pilots[i] %>"
+          }),
           <% } %>
+          <% } %>
+        ]
+
+        <% for (let i = 0; i < pilots.length; i++) { %>
+        createPilot("<%= pilots[i] %>", colors[<%= i %>])
         <% } %>
-      ]
 
-      for (let i = 0; i < pilots.length; i++) {
-        pilots[i].setMap(map)
-      }
-
-      socket.emit('page', 'TRACKING_PAGE');
-
-      socket.on('send_coordonates', function(message) {
         for (let i = 0; i < pilots.length; i++) {
-          for (let j = 0; j < message.length; j++) {
-            if (message[j].reg_number === pilots[i].reg_number) {
-              let path = pilots[i].getPath()
-              if (path.length > 180) path.removeAt(0)
-              path.push(new google.maps.LatLng(message[j].lat, message[j].lng))
+          pilots[i].setMap(map)
+        }
+
+        socket.emit('page', 'TRACKING_PAGE');
+
+        socket.on('send_coordonates', function(message) {
+          for (let i = 0; i < pilots.length; i++) {
+            for (let j = 0; j < message.length; j++) {
+              if (message[j].reg_number === pilots[i].reg_number) {
+                let path = pilots[i].getPath()
+                if (path.length > 180) path.removeAt(0)
+                path.push(new google.maps.LatLng(message[j].lat, message[j].lng))
+              }
             }
           }
-        }
-      })
-
-      socket.on('send_way', function(geoJSON) {
-        for (let i = 0; i < geoJSON.features.length; i++) {
-          switch (geoJSON.features[i].geometry.type) {
-            case 'Point':
-              createMarker(geoJSON.features[i].geometry.coordinates, geoJSON.features[i].properties.name)
-              break
-            case 'LineString':
-              createPolyline(geoJSON.features[i].geometry.coordinates)
-              break
-            case 'Polygon':
-              createPolygon(geoJSON.features[i].geometry.coordinates[0])
-              break
-            default:
-              break
-          }
-        }
-      })
-
-      function createMarker(latLngArray, content) {
-        let coordinates = new google.maps.LatLng(latLngArray[1], latLngArray[0])
-        new TextMarker(coordinates, map, content)
-      }
-
-      function createPolyline(latLngArray) {
-        let coordinates = []
-        for (let i = 0; i < latLngArray.length; i++) {
-          let coor = {
-            lat : latLngArray[i][1],
-            lng : latLngArray[i][0]
-          }
-          coordinates[i] = coor
-        }
-        let polyline = new google.maps.Polyline({
-          path : coordinates,
-          geodesic : true,
-          strokeColor : '#434343',
-          strokeOpacity : 1,
-          strokeWeight : 1
-        });
-        polyline.setMap(map)
-      }
-
-      function createPolygon(latLngArray) {
-        let coordinates = []
-        for (let i = 0; i < latLngArray.length; i++) {
-          let coor = {
-            lat : latLngArray[i][1],
-            lng : latLngArray[i][0]
-          }
-          coordinates[i] = coor
-        }
-        let polygon = new google.maps.Polygon({
-          paths : coordinates,
-          strokeColor : '#434343',
-          strokeOpacity : 0.5,
-          strokeWeight : 1,
-          fillColor : '#434343',
-          fillOpacity : 0.20
         })
-        polygon.setMap(map)
+
+        socket.on('send_way', function(geoJSON) {
+          for (let i = 0; i < geoJSON.features.length; i++) {
+            switch (geoJSON.features[i].geometry.type) {
+              case 'Point':
+                createMarker(geoJSON.features[i].geometry.coordinates, geoJSON.features[i].properties.name)
+                break
+              case 'LineString':
+                createPolyline(geoJSON.features[i].geometry.coordinates)
+                break
+              case 'Polygon':
+                createPolygon(geoJSON.features[i].geometry.coordinates[0])
+                break
+              default:
+                break
+            }
+          }
+        })
+
+        function createMarker(latLngArray, content) {
+          let coordinates = new google.maps.LatLng(latLngArray[1], latLngArray[0])
+          new TextMarker(coordinates, map, content)
+        }
+
+        function createPolyline(latLngArray) {
+          let coordinates = []
+          for (let i = 0; i < latLngArray.length; i++) {
+            let coor = {
+              lat : latLngArray[i][1],
+              lng : latLngArray[i][0]
+            }
+            coordinates[i] = coor
+          }
+          let polyline = new google.maps.Polyline({
+            path : coordinates,
+            geodesic : true,
+            strokeColor : '#434343',
+            strokeOpacity : 1,
+            strokeWeight : 1
+          });
+          polyline.setMap(map)
+        }
+
+        function createPolygon(latLngArray) {
+          let coordinates = []
+          for (let i = 0; i < latLngArray.length; i++) {
+            let coor = {
+              lat : latLngArray[i][1],
+              lng : latLngArray[i][0]
+            }
+            coordinates[i] = coor
+          }
+          let polygon = new google.maps.Polygon({
+            paths : coordinates,
+            strokeColor : '#434343',
+            strokeOpacity : 0.5,
+            strokeWeight : 1,
+            fillColor : '#434343',
+            fillOpacity : 0.2
+          })
+          polygon.setMap(map)
+        }
+
+        function createPilot(regNumber, color) {
+          let pilotTable = document.querySelector('#pilot-table')
+          let div = document.createElement('div')
+          let h2 = document.createElement('h2')
+          div.style.backgroundColor = color
+          div.classList.add('PILOT-' + regNumber)
+          pilotTable.appendChild(div)
+          div.appendChild(h2)
+        }
+
       }
 
-    }
+    })
   </script>
 </head>
 <body>
+  <div class="pilot-table"></div>
   <div class="afficherHeure">
-    <p>Afficher l'heure</p>
-    <div class="icon-top">
-      <img id="icon-top" src="/images/arrow-down.svg" alt="arrow down" width="20" height="20"/>
-    </div>
-    <div class="icon-hidden">
-      <img src="/images/logo-1-dark.svg" alt="logo" width="50" height="50"/>
-    </div>
-    <a>
-    </a>
+    <p>00 : 00 : 00</p>
   </div>
   <div id="map"></div>
 </body>
